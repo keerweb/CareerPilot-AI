@@ -1,0 +1,280 @@
+{
+  "name": "Workflow 3 - Learning Roadmap Generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "23fed1bd-0cf7-4e55-ba42-10da4ef3b0b6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4",
+          "mode": "list",
+          "cachedResultName": "CareerPilot-AI Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0804de46-2568-4c36-807b-95c73fb0a7de",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "q7JufTMyYFY08mJA",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an expert AI Career Mentor.\n\nCreate a detailed 6-month learning roadmap for this student.\n\nStudent Details:\n\nName: {{$json[\"Name\"]}}\nDegree: {{$json[\"Degree\"]}}\nSkills: {{$json[\"Skills\"]}}\nInterests: {{$json[\"Interests\"]}}\nCareer Goal: {{$json[\"CareerGoal\"]}}\n\nReturn the result in Markdown.\n\nInclude:\n\n# Career Goal\n\n# Monthly Roadmap\n\nMonth 1\nMonth 2\nMonth 3\nMonth 4\nMonth 5\nMonth 6\n\n# Certifications\n\n# Project Ideas\n\n# Books\n\n# YouTube Channels\n\n# Internship Preparation\n\n# Daily Routine"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        -224
+      ],
+      "id": "f78df580-c130-47e4-8906-3e02c24bab32",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "BT2j7cOIBrVFYcll",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const student = $('Get row(s) in sheet').first().json;\nconst ai = $('Message a model').first().json.content.parts[0].text;\n\nconst html = `\n<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>CareerPilot AI Report</title>\n\n<style>\n\nbody{\nfont-family:Arial;\nbackground:#f4f7fb;\npadding:40px;\n}\n\n.container{\nbackground:white;\npadding:40px;\nborder-radius:12px;\nbox-shadow:0px 0px 15px rgba(0,0,0,.1);\n}\n\nh1{\ncolor:#2563eb;\n}\n\nh2{\nmargin-top:30px;\ncolor:#444;\n}\n\n</style>\n\n</head>\n\n<body>\n\n<div class=\"container\">\n\n<h1>CareerPilot AI Report</h1>\n\n<h2>Student Details</h2>\n\n<p><b>Name:</b> ${student.Name}</p>\n<p><b>Email:</b> ${student.Email}</p>\n<p><b>College:</b> ${student.College}</p>\n<p><b>Degree:</b> ${student.Degree}</p>\n<p><b>Career Goal:</b> ${student.CareerGoal}</p>\n\n<hr>\n\n<h2>AI Recommendation</h2>\n\n<p>${ai.replace(/\\n/g,\"<br>\")}</p>\n\n</div>\n\n</body>\n\n</html>\n`;\n\nreturn {\n  json: {\n    html\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -16
+      ],
+      "id": "d55faddb-2ae4-44c1-8528-a654d4035a5d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        480,
+        -16
+      ],
+      "id": "8e76f988-09b4-42c4-ad59-456a7ded63fa",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Get row(s) in sheet').first().json.Name + \"_Career_Report.html\" }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root folder)",
+          "cachedResultUrl": "https://drive.google.com/drive"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1136,
+        -16
+      ],
+      "id": "44f3e32f-fa56-4d3f-9a93-2398d48a658e",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "iRU7DJLCetdT3507",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "html",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        928,
+        -16
+      ],
+      "id": "5d256638-7326-45f8-8b98-8f74ee1e0c27",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').first().json. Email }}",
+        "subject": "🎓 Your CareerPilot AI Report",
+        "message": "=Hello {{ $('Get row(s) in sheet').first().json.Name }},  Your personalized CareerPilot AI report has been generated successfully.  Please find the report attached to this email.  Thank you, CareerPilot AI",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        -16
+      ],
+      "id": "d398b60e-8f48-4ce7-a9c4-b32c4ad632a1",
+      "name": "Send a message",
+      "webhookId": "2e7fb7ef-5c61-4cce-8a6d-51b3752e3648",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "lfzAjjXsfSu83j53",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8f741414-a044-4925-97d0-7e9d50a7699d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83a68018ebabada98cad9f499981fd132b3a8522823b881996c38fcc1dc65ef7"
+  },
+  "nodeGroups": [],
+  "id": "vDSS2L2dHjHmTENH",
+  "tags": []
+}

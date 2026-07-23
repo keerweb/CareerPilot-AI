@@ -1,0 +1,472 @@
+{
+  "name": "Workflow 2 - Registration Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "student-registration",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f7ada4be-35f9-423a-93a4-cb0f9f9f4c1e",
+      "name": "Webhook",
+      "webhookId": "dd9bfb65-cd8a-457e-97ac-7d1ad7947e61"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "57dbdbbc-ca57-4918-b31e-0de8598c563f",
+              "name": "StudentID",
+              "value": "={{ \"STU-\" + Date.now() }}",
+              "type": "string"
+            },
+            {
+              "id": "ee300a8d-c121-4cad-8242-566ce553294c",
+              "name": "Full Name",
+              "value": "={{$json.body[\"Full Name\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "3ebc3794-f22d-4e45-8f3d-eedfdbd62dc0",
+              "name": "Email Address",
+              "value": "={{$json.body[\"Email Address\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "e999d107-a5fd-4774-b107-d6e69345c099",
+              "name": "College Name",
+              "value": "={{$json.body[\"College Name\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "16a221fb-9e49-46d9-ae39-34934e5835d8",
+              "name": "Degree",
+              "value": "={{$json.body[\"Degree\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "6e06540c-bc5c-4891-9743-72418c0a5544",
+              "name": "Current Year",
+              "value": "={{$json.body[\"Current Year\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "fda5314c-040b-47ec-8040-e333b249f5dc",
+              "name": "Interests",
+              "value": "={{$json.body[\"Interests\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "51f45479-f308-4c49-9108-616a8499dcb5",
+              "name": "Career Goal",
+              "value": "={{$json.body[\"Career Goal\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "96a33fe6-5d8e-476c-aa54-aeffea1ca15a",
+              "name": "Resume Link",
+              "value": "={{$json.body[\"Resume Link\"]}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c805b2df-13d7-4a73-a714-36d99c4f2cf6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4",
+          "mode": "list",
+          "cachedResultName": "CareerPilot-AI Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1520036205,
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4/edit#gid=1520036205"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name": "={{$json[\"Full Name\"]}}",
+            "Email Address ": "={{$json[\"Email Address\"]}}",
+            "College Name": "={{$json[\"College Name\"]}}",
+            "Degree": "={{$json[\"Degree\"]}}",
+            "Current Year": "={{$json[\"Current Year\"]}}",
+            "Skills": "={{$json[\"Skills\"]}}",
+            "Resume Link (Google Drive)": "={{$json[\"Resume Link\"]}}",
+            "Carrer Goal": "={{$json[\"Career Goal\"]}}",
+            "Interests": "={{$json[\"Interests\"]}}",
+            "Timestamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Address ",
+              "displayName": "Email Address ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "College Name",
+              "displayName": "College Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Degree",
+              "displayName": "Degree",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Current Year",
+              "displayName": "Current Year",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Skills",
+              "displayName": "Skills",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Interests",
+              "displayName": "Interests",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Carrer Goal",
+              "displayName": "Carrer Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Resume Link (Google Drive)",
+              "displayName": "Resume Link (Google Drive)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        0
+      ],
+      "id": "68369d72-aee8-47bf-9449-e21f6481afd3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "q7JufTMyYFY08mJA",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an expert AI Career Counselor.\n\nAnalyze the following student profile.\n\nName: {{$json[\"Full Name\"]}}\nEmail: {{$json[\"Email Address\"]}}\nCollege: {{$json[\"College Name\"]}}\nDegree: {{$json[\"Degree\"]}}\nCurrent Year: {{$json[\"Current Year\"]}}\nSkills: {{$json[\"Skills\"]}}\nInterests: {{$json[\"Interests\"]}}\nCareer Goal: {{$json[\"Career Goal\"]}}\n\nGenerate the response in JSON only.\n\n{\n  \"career_path\":\"\",\n  \"skill_gap\":[],\n  \"recommended_certifications\":[],\n  \"recommended_projects\":[],\n  \"internships\":[],\n  \"learning_roadmap\":[]\n}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "e7d3a5b5-e59c-4a5e-bd0d-424884a1e138",
+      "name": "Message a model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "BT2j7cOIBrVFYcll",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4",
+          "mode": "list",
+          "cachedResultName": "CareerPilot-AI Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1362172637,
+          "mode": "list",
+          "cachedResultName": "LearningRoadmap",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFpSfY3drnjXOD-xI1yHbB82nT9_k7Wj8dZyGeQ4tg4/edit#gid=1362172637"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "StudentID": "={{$node[\"Edit Fields\"].json[\"StudentID\"]}}",
+            "CarrerPath": "AI career_path",
+            "SkillGap": "AI skill_gap",
+            "Certifications ": "AI recommended_certifications",
+            "RecommendedProjects": "AI recommended_projects",
+            "Internships": "AI internships",
+            "LearningRoadmap": "AI learning_roadmap",
+            "GeneratedAt": "={{$now}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "StudentID",
+              "displayName": "StudentID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CarrerPath",
+              "displayName": "CarrerPath",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "SkillGap",
+              "displayName": "SkillGap",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Certifications ",
+              "displayName": "Certifications ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "RecommendedProjects",
+              "displayName": "RecommendedProjects",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Internships",
+              "displayName": "Internships",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "LearningRoadmap",
+              "displayName": "LearningRoadmap",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "GeneratedAt",
+              "displayName": "GeneratedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "5bf4cfd7-af60-4816-ae2f-3ed26f36fe01",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "q7JufTMyYFY08mJA",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ecdbbc71-4a04-42a6-a679-db2b695c6cda",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83a68018ebabada98cad9f499981fd132b3a8522823b881996c38fcc1dc65ef7"
+  },
+  "nodeGroups": [],
+  "id": "CNnixrxQJ20fmsqi",
+  "tags": []
+}
